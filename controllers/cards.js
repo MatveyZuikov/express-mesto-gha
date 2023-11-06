@@ -7,7 +7,7 @@ const getCards = (req, res) => {
     })
     .catch((err) => {
       console.err(err);
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -24,7 +24,7 @@ const createCard = (req, res) => {
       if (err.name === "ValidationError") {
         return res.status(400).send(err.message);
       }
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -40,7 +40,7 @@ const deleteCard = (req, res) => {
     })
     .catch((err) => {
       console.err(err);
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -51,7 +51,7 @@ const likeCard = (req, res) => {
     { new: true }
   ).catch((err) => {
     console.err(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).send("На сервере произошла ошибка");
   });
 };
 
@@ -62,7 +62,7 @@ const dislikeCard = (req, res) => {
     { new: true }
   ).catch((err) => {
     console.err(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).send("На сервере произошла ошибка");
   });
 };
 

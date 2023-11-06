@@ -12,7 +12,7 @@ const createUser = (req, res) => {
       if (err.name === "ValidationError") {
         return res.status(400).send(err.message);
       }
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -23,7 +23,7 @@ const getUsers = (req, res) => {
     })
     .catch((err) => {
       console.err(err);
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -33,7 +33,7 @@ const getUserById = (req, res) => {
   UserModel.findById(id)
     .then((user) => {
       if (!user) {
-        res.status(404).send("User not found");
+        res.status(404).send("На сервере произошла ошибка");
       }
       res.status(200).send(user);
     })
@@ -41,7 +41,7 @@ const getUserById = (req, res) => {
       if (err.name === "CastError") {
         return res.status(400).send(err.message);
       }
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -55,7 +55,7 @@ const updateUserById = (req, res) => {
       if (err.name === "ValidationError") {
         return res.status(400).send(err.message);
       }
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
@@ -69,7 +69,7 @@ const updateUserAvatar = (req, res) => {
       if (err.name === "ValidationError") {
         return res.status(400).send(err.message);
       }
-      return res.status(500).send("Server Error");
+      return res.status(500).send("На сервере произошла ошибка");
     });
 };
 
