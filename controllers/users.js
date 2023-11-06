@@ -9,7 +9,7 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       // console.log(err);
-      if (err) {
+      if (err.name === "ValidationError") {
         return res.status(400).send(err);
       }
       return res.status(500).send("На сервере произошла ошибка");
@@ -39,7 +39,7 @@ const getUserById = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        return res.status(400).send(err.message);
+        return res.status(400).send(err);
       }
       return res.status(500).send("На сервере произошла ошибка");
     });
@@ -53,7 +53,7 @@ const updateUserById = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return res.status(400).send(err.message);
+        return res.status(400).send(err);
       }
       return res.status(500).send("На сервере произошла ошибка");
     });
@@ -67,7 +67,7 @@ const updateUserAvatar = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return res.status(400).send(err.message);
+        return res.status(400).send(err);
       }
       return res.status(500).send("На сервере произошла ошибка");
     });
