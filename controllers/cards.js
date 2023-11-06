@@ -15,7 +15,7 @@ const createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  return CardModel.create({ name: name, link: link, owner: owner })
+  return CardModel.create({ name, link, owner })
     .then((data) => {
       res.status(201).send(data);
     })
@@ -48,7 +48,7 @@ const likeCard = (req, res) => {
   CardModel.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-    { new: true }
+    { new: true },
   ).catch((err) => {
     console.err(err);
     return res.status(500).send("На сервере произошла ошибка");
@@ -59,7 +59,7 @@ const dislikeCard = (req, res) => {
   CardModel.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
-    { new: true }
+    { new: true },
   ).catch((err) => {
     console.err(err);
     return res.status(500).send("На сервере произошла ошибка");
