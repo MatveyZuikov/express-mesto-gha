@@ -28,6 +28,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/:info", (req, res) => {
+  res.status(404).send({ message: "Page not found" });
+});
+
 app.use(usersRouter);
 app.use(cardsRouter);
 
