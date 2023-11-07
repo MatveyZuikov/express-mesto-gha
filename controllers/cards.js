@@ -49,10 +49,17 @@ const likeCard = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
-  ).catch((err) => {
-    console.err(err);
-    return res.status(500).send("На сервере произошла ошибка");
-  });
+  )
+    .then((card) => {
+      if (!card) {
+        res.status(404).send("Card not found");
+      }
+      res.status(200).send(card);
+    })
+    .catch((err) => {
+      console.err(err);
+      return res.status(500).send("На сервере произошла ошибка");
+    });
 };
 
 const dislikeCard = (req, res) => {
@@ -60,10 +67,17 @@ const dislikeCard = (req, res) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
-  ).catch((err) => {
-    console.err(err);
-    return res.status(500).send("На сервере произошла ошибка");
-  });
+  )
+    .then((card) => {
+      if (!card) {
+        res.status(404).send("Card not found");
+      }
+      res.status(200).send(card);
+    })
+    .catch((err) => {
+      console.err(err);
+      return res.status(500).send("На сервере произошла ошибка");
+    });
 };
 
 module.exports = {
