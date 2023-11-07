@@ -50,9 +50,10 @@ const likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
   )
+    .orFail(res.status(404).send({ message: "Not found" }))
     .then((card) => {
       if (!card) {
-        res.status(404).send("Card not found");
+        res.status(404).send({ message: "Not found" });
       }
       res.status(200).send(card);
     })
@@ -68,9 +69,10 @@ const dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
+    .orFail(res.status(404).send({ message: "Not found" }))
     .then((card) => {
       if (!card) {
-        res.status(404).send("Card not found");
+        res.status(404).send({ message: "Not found" });
       }
       res.status(200).send(card);
     })
