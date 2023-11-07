@@ -29,15 +29,17 @@ const getUsers = (req, res) => {
 
 const getUserById = (req, res) => {
   const { id } = req.params;
+  console.log(id);
 
   UserModel.findById(id)
     .then((user) => {
       if (!user) {
-        res.status(404).send("На сервере произошла ошибка");
+        res.status(404).send({ message: "На сервере произошла ошибка" });
       }
       res.status(200).send(user);
     })
     .catch((err) => {
+      console.log(err);
       if (err.name === "CastError") {
         return res.status(400).send(err);
       }
@@ -49,9 +51,10 @@ const updateUserById = (req, res) => {
   const owner = req.user._id;
   const userData = req.body;
 
-  UserModel.findByIdAndUpdate(owner, userData, { new: true },)
+  UserModel.findByIdAndUpdate(owner, userData, { new: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
+      console.log(err);
       if (err.name === "ValidationError") {
         return res.status(400).send(err);
       }
