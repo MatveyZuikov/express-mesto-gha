@@ -39,7 +39,9 @@ const deleteCard = (req, res) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      console.err(err);
+      if (err.name === "CastError") {
+        return res.status(400).send(err);
+      }
       return res.status(500).send("На сервере произошла ошибка");
     });
 };
@@ -78,7 +80,7 @@ const dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(400).send({ message: "Некорректный id" });
       }
       return res.status(500).send("На сервере произошла ошибка");
     });
