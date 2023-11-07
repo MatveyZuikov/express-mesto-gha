@@ -52,7 +52,7 @@ const likeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: "Not found" });
+        return res.status(404).send({ message: "Not found" });
       }
       return res.status(200).send(card);
     })
@@ -73,7 +73,7 @@ const dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: "Not found" });
+        return res.status(404).send({ message: "Not found" });
       }
       return res.status(200).send(card);
     })
