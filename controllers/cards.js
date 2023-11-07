@@ -57,7 +57,6 @@ const likeCard = (req, res) => {
       return res.status(200).send(card);
     })
     .catch((err) => {
-      console.err(err);
       if (err.name === "CastError") {
         return res.status(400).send(err);
       }
@@ -78,7 +77,6 @@ const dislikeCard = (req, res) => {
       return res.status(200).send(card);
     })
     .catch((err) => {
-      console.err(err);
       if (err.name === "CastError") {
         return res.status(400).send(err);
       }
