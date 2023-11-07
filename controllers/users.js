@@ -49,7 +49,7 @@ const updateUserById = (req, res) => {
   const owner = req.user._id;
   const userData = req.body;
 
-  UserModel.findByIdAndUpdate(owner, userData)
+  UserModel.findByIdAndUpdate(owner, userData, { new: true },)
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -63,7 +63,7 @@ const updateUserAvatar = (req, res) => {
   const owner = req.user._id;
   const userData = req.body;
 
-  UserModel.findByIdAndUpdate(owner, userData)
+  UserModel.findByIdAndUpdate(owner, userData, { new: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === "ValidationError") {
