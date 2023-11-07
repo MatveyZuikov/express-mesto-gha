@@ -59,6 +59,9 @@ const likeCard = (req, res) => {
     })
     .catch((err) => {
       console.err(err);
+      if (err.name === "CastError") {
+        return res.status(400).send(err);
+      }
       return res.status(500).send("На сервере произошла ошибка");
     });
 };
@@ -78,6 +81,9 @@ const dislikeCard = (req, res) => {
     })
     .catch((err) => {
       console.err(err);
+      if (err.name === "CastError") {
+        return res.status(400).send(err);
+      }
       return res.status(500).send("На сервере произошла ошибка");
     });
 };
