@@ -51,7 +51,7 @@ const updateUserById = (req, res) => {
   const owner = req.user._id;
   const userData = req.body;
 
-  UserModel.findByIdAndUpdate(owner, userData, { new: true })
+  UserModel.findByIdAndUpdate(owner, userData, { new: true, runValidators: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       console.log(err);
