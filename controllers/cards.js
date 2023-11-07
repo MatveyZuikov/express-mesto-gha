@@ -34,7 +34,7 @@ const deleteCard = (req, res) => {
   CardModel.findByIdAndRemove(cardId)
     .then((card) => {
       if (!card) {
-        res.status(404).send("Card not found");
+        res.status(404).send({ message: "Card not found" });
       }
       res.status(200).send(card);
     })
