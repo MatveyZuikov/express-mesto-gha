@@ -28,29 +28,33 @@ const createCard = (req, res) => {
     });
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
-  CardModel.findByIdAndRemove(cardId)
-    .then((card) => {
-      if (!card) {
-        res.status(404).send({ message: "Card not found" });
-      }
-      res.status(200).send(card);
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        return res.status(400).send(err);
-      }
-      return res.status(500).send("На сервере произошла ошибка");
-    });
+  if (req.user._id === card.owner.toString()) {
+    CardModel.findByIdAndRemove(cardId)
+      .then((card) => {
+        if (!card) {
+          res.status(404).send({ message: "Card not found" });
+        }
+        res.status(200).send(card);
+      })
+      .catch((err) => {
+        if (err.name === "CastError") {
+          return res.status(400).send(err);
+        }
+        return res.status(500).send("На сервере произошла ошибка");
+      });
+  } else {
+    return Promise.reject(new Error("У вас нет прав на удаление этой карточки"));
+  }
 };
 
 const likeCard = (req, res) => {
   CardModel.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-    { new: true },
+    { new: true }
   )
     .then((card) => {
       if (!card) {
@@ -70,7 +74,7 @@ const dislikeCard = (req, res) => {
   CardModel.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
-    { new: true },
+    { new: true }
   )
     .then((card) => {
       if (!card) {

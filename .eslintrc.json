@@ -5,6 +5,8 @@
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "quotes": [2, "double", { "avoidEscape": true }],
     "object-shorthand": ["error", "always", { "avoidQuotes": true }],
-    "no-console": "off"
+    "no-console": "off",
+    "arrow-body-style": "off",
+    "multiline": "never"
   }
 }
