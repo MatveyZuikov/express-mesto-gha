@@ -35,16 +35,16 @@ const deleteCard = (req, res, next) => {
   Card.findById(cardId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError("Карточка не найдена.");
+        throw new NotFoundError("Карточка не найдена");
       }
 
       if (card.owner.toString() !== req.user._id) {
         throw new AuthForbiddenError(
-          "Нельзя удалить карточку другого пользователя."
+          "Нельзя удалить карточку другого пользователя"
         );
       }
 
-      return card.remove().then(() => res.send({ data: card }));
+      return card.remove().then(() => res.status(200).send({ data: card }));
     })
     .catch((err) => {
       if (err.name === "CastError") {
