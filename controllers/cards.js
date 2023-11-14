@@ -31,6 +31,11 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
+  const removeCard = () => {
+    Card.findByIdAndRemove(cardId)
+      .then((card) => res.status(200).send(card))
+      .catch(next);
+  };
 
   Card.findById(cardId)
     .then((card) => {
@@ -44,7 +49,7 @@ const deleteCard = (req, res, next) => {
         );
       }
 
-      return card.remove().then(() => res.status(200).send({ data: card }));
+      return removeCard();
     })
     .catch((err) => {
       if (err.name === "CastError") {
