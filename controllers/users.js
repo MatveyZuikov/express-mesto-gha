@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user");
 
-
 const ValidationError = require("../errors/ValidationError");
 const ConflictError = require("../errors/ConflictError");
 const NotFoundError = require("../errors/NotFoundError");
@@ -19,7 +18,7 @@ const createUser = (req, res, next) => {
       UserModel.create({ name, about, avatar, email, password: hash });
     })
     .then((data) => {
-      return res.status(201).send(data);
+      return res.status(201).send({ data: data });
     })
     .catch((err) => {
       if (err.code === 11000) {
@@ -46,7 +45,7 @@ const login = (req, res, next) => {
         maxAge: 3600000,
         httpOnly: true,
       });
-      res.send({ token });
+      res.send({ message: "Авторизация прошла успешно" });
     })
     .catch(next);
 };
@@ -54,7 +53,7 @@ const login = (req, res, next) => {
 const getUsers = (req, res, next) => {
   UserModel.find()
     .then((users) => {
-      res.status(200).send(users);
+      res.status(200).send({ data: users });
     })
     .catch(next);
 };
@@ -67,7 +66,7 @@ const getMyInfo = (req, res, next) => {
       if (!user) {
         throw new NotFoundError("Переданы некорректные данные");
       }
-      res.status(200).send(user);
+      res.status(200).send({ data: user });
     })
     .catch(next);
 };
@@ -80,7 +79,7 @@ const getUserById = (req, res, next) => {
       if (!user) {
         throw new NotFoundError("Переданы некорректные данные");
       }
-      res.status(200).send(user);
+      res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === "CastError") {
