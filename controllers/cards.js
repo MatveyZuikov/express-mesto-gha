@@ -31,13 +31,8 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  const removeCard = () => {
-    Card.findByIdAndRemove(cardId)
-      .then((card) => res.status(200).send(card))
-      .catch(next);
-  };
 
-  Card.findById(cardId)
+  CardModel.findById(cardId)
     .then((card) => {
       if (!card) {
         throw new NotFoundError("Карточка не найдена");
@@ -49,7 +44,7 @@ const deleteCard = (req, res, next) => {
         );
       }
 
-      return removeCard();
+      return card.remove().then(() => res.send({ data: card }));
     })
     .catch((err) => {
       if (err.name === "CastError") {
