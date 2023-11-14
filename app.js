@@ -8,7 +8,7 @@ const { login, createUser } = require("./controllers/users");
 const { celebrate, Joi, errors } = require("celebrate");
 const auth = require("./middlewares/auth");
 const handleError = require("./middlewares/handleError");
-const AvatarPattern = require("./utils/avatarPattern");
+const LinkPattern = require("./utils/avatarPattern");
 const NotFoundError = require("./errors/NotFoundError");
 
 mongoose
@@ -45,7 +45,7 @@ app.post(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().pattern(AvatarPattern),
+      avatar: Joi.string().pattern(LinkPattern),
       email: Joi.string().required().email(),
       password: Joi.string().required(),
     }),
