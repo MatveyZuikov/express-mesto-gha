@@ -58,7 +58,7 @@ app.use(auth);
 app.use(usersRouter);
 app.use(cardsRouter);
 app.all("*", (req, res, next) => {
-  throw new NotFoundError("Page not found");
+  next(new NotFoundError("Маршрут не найден")) ;
 });
 
 app.use(errors());
