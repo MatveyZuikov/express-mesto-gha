@@ -8,6 +8,8 @@ const { login, createUser } = require("./controllers/users");
 const { celebrate, Joi, errors } = require("celebrate");
 const auth = require("./middlewares/auth");
 const handleError = require("./middlewares/handleError");
+const AvatarPattern = require("./utils/avatarPattern");
+const NotFoundError = require("./errors/NotFoundError");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/mestodb", {
@@ -27,15 +29,36 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
-app.post("/signin", login);
-app.post("/signup", createUser);
+app.post(
+  "/signin",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login
+);
+app.post(
+  "/signup",
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+      avatar: Joi.string().pattern(AvatarPattern),
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  createUser
+);
 
 app.use(auth);
 
 app.use(usersRouter);
 app.use(cardsRouter);
-app.use("*", (req, res) => {
-  res.status(404).send({ message: "Page not found" });
+app.use("*", (req, res, next) => {
+  throw new NotFoundError("Page not found");
 });
 
 app.use(errors());
