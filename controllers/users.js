@@ -61,7 +61,7 @@ const getUsers = (req, res, next) => {
 const getMyInfo = (req, res, next) => {
   const owner = req.user._id;
 
-  UserModel.find(owner)
+  UserModel.findById(owner)
     .then((user) => {
       if (!user) {
         throw new NotFoundError("Переданы некорректные данные");
