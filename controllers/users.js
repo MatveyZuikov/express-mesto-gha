@@ -17,8 +17,8 @@ const createUser = (req, res, next) => {
     .then((hash) => {
       UserModel.create({ name, about, avatar, email, password: hash });
     })
-    .then((data) => {
-      return res.status(201).send({ data: data });
+    .then((user) => {
+      return res.status(201).send({ data: user });
     })
     .catch((err) => {
       if (err.code === 11000) {
