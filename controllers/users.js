@@ -15,22 +15,23 @@ const createUser = (req, res, next) => {
   bcrypt
     .hash(password, saltRounds)
     .then((hash) => {
-      UserModel.create({ name, about, avatar, email, password: hash });
+      UserModel.create({ name, about, avatar, email, password: hash })
+        .then((user) => {
+          return res.status(201).send({ data: { name, about, avatar, email } });
+        })
+        .catch((err) => {
+          if (err.code === 11000) {
+            return next(
+              new ConflictError("Пользователь с таким email уже существует")
+            );
+          }
+          if (err.name === "ValidationError") {
+            return next(new ValidationError("Некорректные данные"));
+          }
+          next(err);
+        });
     })
-    .then((user) => {
-      return res.status(201).send(user);
-    })
-    .catch((err) => {
-      if (err.code === 11000) {
-        return next(
-          new ConflictError("Пользователь с таким email уже существует")
-        );
-      }
-      if (err.name === "ValidationError") {
-        return next(new ValidationError("Некорректные данные"));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 const login = (req, res, next) => {
