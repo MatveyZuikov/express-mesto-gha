@@ -10,6 +10,7 @@ const auth = require("./middlewares/auth");
 const handleError = require("./middlewares/handleError");
 const LinkPattern = require("./utils/avatarPattern");
 const NotFoundError = require("./errors/NotFoundError");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/mestodb", {
@@ -24,6 +25,8 @@ const PORT = 3000;
 app.use(cookieParser());
 
 app.use(express.json());
+
+app.use(requestLogger);
 
 app.get("/", (req, res) => {
   res.send("hello");
@@ -58,9 +61,10 @@ app.use(auth);
 app.use(usersRouter);
 app.use(cardsRouter);
 app.all("*", (req, res, next) => {
-  next(new NotFoundError("Маршрут не найден")) ;
+  next(new NotFoundError("Маршрут не найден"));
 });
 
+app.use(errorLogger);
 app.use(errors());
 app.use(handleError);
 
